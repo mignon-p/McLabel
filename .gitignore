@@ -1,0 +1,8 @@
+/.cabal-sandbox/
+/.stack-work/
+/cabal.sandbox.config
+/dist/
+/src/highlight.js
+/src/style.css
+*~
+.DS_Store
