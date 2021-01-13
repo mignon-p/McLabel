@@ -96,7 +96,19 @@ buildLineItem item (NTree _ kids) state =
   in foldl' f item kids
 
 isTag :: XNode -> String -> Bool
-isTag = undefined
+isTag (XTag qn _) name = localPart qn == name
+isTag _ _ = False
 
 getAttr :: XNode -> String -> String
-getAttr = undefined
+getAttr (XTag _ attrs) name = getAttr' attrs name
+getAttr _ _ = ""
+
+getAttr' :: [XmlTree] -> String -> String
+getAttr' [] _ = ""
+getAttr' (NTree (XAttr qn) kids : rest) name
+  | localPart qn == name = getValue kids
+getAttr' (_ : rest) name = getAttr' rest name
+
+getValue [] = ""
+getValue (NTree (XText value) _ : rest) = value ++ getValue rest
+getValue (_ : rest) = getValue rest
