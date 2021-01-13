@@ -1,7 +1,9 @@
 module Main where
 
 import Data.Char
+import Data.Ord
 import Data.List
+import Text.Read
 
 import McMC
 
@@ -30,7 +32,14 @@ trimItem item =
 fixItem :: LineItem -> LineItem
 fixItem = trimItem . fixCatNo
 
+getLineNo :: LineItem -> Maybe Integer
+getLineNo = readMaybe . liLineNo
+
+sortItems :: [LineItem] -> [LineItem]
+sortItems = sortBy (comparing getLineNo)
+
 main :: IO ()
 main = do
   items <- lineItemsFromFile htmlfile
-  mapM_ (putStrLn . show . fixItem) items
+  let items' = sortItems $ map fixItem items
+  mapM_ (putStrLn . show) items'
