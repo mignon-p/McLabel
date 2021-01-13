@@ -1,6 +1,9 @@
 {-# LANGUAGE MultiWayIf #-}
 
-module McMC (lineItemsFromFile) where
+module McMC
+  ( LineItem (..)
+  , lineItemsFromFile
+  ) where
 
 import Data.Tree.NTree.TypeDefs
 import Text.XML.HXT.Core
