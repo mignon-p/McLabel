@@ -1,9 +1,12 @@
+{-# LANGUAGE MultiWayIf #-}
+
 module McMC (lineItemsFromFile) where
 
 import Data.Tree.NTree.TypeDefs
 import Text.XML.HXT.Core
 import Text.XML.HXT.XPath.Arrows
 
+import Data.List
 import Data.Maybe
 
 data LineItem = LineItem
@@ -54,7 +57,7 @@ getPurchaseOrder (NTree tag@(XTag _ _) _ : trees)
 getPurchaseOrder (_:trees) = getPurchaseOrder trees
 
 getLineItems :: String -> [XmlTree] -> [LineItem]
-getLineItems po trees = mapMaybe trees (getLineItem po)
+getLineItems po trees = mapMaybe (getLineItem po) trees
 
 getLineItem :: String -> XmlTree -> Maybe LineItem
 getLineItem po tree@(NTree tag@(XTag _ _) _)
@@ -69,7 +72,7 @@ buildLineItem item (NTree tag@(XTag _ _) kids) state =
       src   = getAttr tag "src"
       (item', state') =
         if | isTag tag "div" && clazz == "dtl-row-nbr" -> (item, DtlRowNbr)
-           | isTag tag "a" && clazz = "title-dtl-link" ->
+           | isTag tag "a" && clazz == "title-dtl-link" ->
                (item { liUrl = href }, TitleDtlLink)
            | isTag tag "div" && clazz == "dtl-row-copy" -> (item, DtlRowCopy)
            | isTag tag "p" && clazz == "dtl-row-specs" -> (item, DtlRowSpecs)
@@ -92,5 +95,8 @@ buildLineItem item (NTree _ kids) state =
   let f li kid = buildLineItem li kid state
   in foldl' f item kids
 
+isTag :: XNode -> String -> Bool
 isTag = undefined
+
+getAttr :: XNode -> String -> String
 getAttr = undefined
