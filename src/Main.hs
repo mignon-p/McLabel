@@ -8,10 +8,10 @@ import McMC
 import TransformItem
 
 prefix :: FilePath
-prefix = "/Users/ppelleti/misc/"
+prefix = "/Users/ppelleti/orders/McMaster-Carr/"
 
 htmlfile :: FilePath
-htmlfile = prefix ++ "0104ppelleti.html"
+htmlfile = prefix ++ "0112ppelleti.html"
 
 destDir :: FilePath
 destDir = "/Users/ppelleti/Documents/DYMO Label Software/Labels/"
