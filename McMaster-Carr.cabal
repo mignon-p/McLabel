@@ -59,6 +59,8 @@ executable McMaster-Carr
 
   -- Other library packages from which modules are imported.
   build-depends:       base >=4.7 && <5
+                     , bytestring >= 0.10.4 && < 0.12
+                     , base64-bytestring >= 1.2.0.1 && < 1.3
                      , hxt >= 9.3 && < 9.4
                      , hxt-xpath >= 9.1 && < 9.2
 
