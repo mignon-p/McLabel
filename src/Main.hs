@@ -28,7 +28,7 @@ zeroPad lineNo =
 writeLabel :: LineItem -> IO ()
 writeLabel item = do
   let lineNo = zeroPad (liLineNo item)
-  let destFile = destDir ++ liPoNo item ++ "-" ++ lineNo ++ ".label"
+  let destFile = destDir ++ "Mc" ++ liPoNo item ++ "-" ++ lineNo ++ ".label"
   makeLabel destFile item
 
 main :: IO ()

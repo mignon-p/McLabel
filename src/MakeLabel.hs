@@ -10,9 +10,6 @@ import Data.List
 
 import McMC
 
-lineLength :: Int
-lineLength = 25
-
 templateName :: String
 templateName = "label-template.xml"
 
@@ -35,26 +32,27 @@ fillFields item (NTree node kids) =
 
 xformTxt :: LineItem -> String -> String
 xformTxt item "INSERT:ITEM_GRAPHIC"        = liImg item
-xformTxt item "INSERT:ITEM_TITLE"          = wrap (liTitle item) ++ "\n"
-xformTxt item "INSERT:ITEM_DESCRIPTION"    = wrap (liDesc item)
+xformTxt item "INSERT:ITEM_TITLE"          = wrap 20 (liTitle item) ++ "\n"
+xformTxt item "INSERT:ITEM_DESCRIPTION"    = wrap 25 (liDesc item)
 xformTxt item "INSERT:ITEM_URL"            = liUrl item
 xformTxt item "INSERT:ITEM_CATNO"          = liCatNo item ++ "\n"
 xformTxt item "INSERT:ITEM_PURCHASE_ORDER" = combinePoLine item
 xformTxt _ txt = txt
 
 combinePoLine :: LineItem -> String
-combinePoLine item = liPoNo item ++ ":" ++ liLineNo item
+combinePoLine item = liPoNo item ++ "-" ++ liLineNo item
 
-wrap :: String -> String
+wrap :: Int -> String -> String
 wrap = wrap' 0
 
-wrap' :: Int -> String -> String
-wrap' _ "" = ""
-wrap' chars s =
+wrap' :: Int -> Int -> String -> String
+wrap' _ _ "" = ""
+wrap' chars lineLength s =
   let (_, s') = span isSpace s
       (word, rest) = span (not . isSpace) s'
       first = chars == 0
       space' = if first then "" else " "
+      chars' = chars + length space' + length word
   in if first || chars + length word < lineLength
-     then space' ++ word ++ wrap' (chars + length space' + length word) rest
-     else "\n" ++ wrap' 0 s'
+     then space' ++ word ++ wrap' chars' lineLength rest
+     else "\n" ++ wrap' 0 lineLength s'
