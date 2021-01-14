@@ -1,5 +1,8 @@
 module Main where
 
+import Text.Printf
+import Text.Read
+
 import MakeLabel
 import McMC
 import TransformItem
@@ -13,9 +16,19 @@ htmlfile = prefix ++ "0104ppelleti.html"
 destDir :: FilePath
 destDir = "/tmp/labels/"
 
+fmtInt :: Int -> String
+fmtInt n = printf "%03d" n
+
+zeroPad :: String -> String
+zeroPad lineNo =
+  case readMaybe lineNo of
+    Nothing -> lineNo
+    Just n -> fmtInt n
+
 writeLabel :: LineItem -> IO ()
 writeLabel item = do
-  let destFile = destDir ++ liPoNo item ++ "-" ++ liLineNo item ++ ".label"
+  let lineNo = zeroPad (liLineNo item)
+  let destFile = destDir ++ liPoNo item ++ "-" ++ lineNo ++ ".label"
   makeLabel destFile item
 
 main :: IO ()
