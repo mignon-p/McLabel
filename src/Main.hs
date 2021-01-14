@@ -14,7 +14,7 @@ htmlfile :: FilePath
 htmlfile = prefix ++ "0104ppelleti.html"
 
 destDir :: FilePath
-destDir = "/tmp/labels/"
+destDir = "/Users/ppelleti/Documents/DYMO Label Software/Labels/"
 
 fmtInt :: Int -> String
 fmtInt n = printf "%03d" n
