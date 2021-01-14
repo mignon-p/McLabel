@@ -5,6 +5,7 @@ import Data.Ord
 import Data.List
 import Text.Read
 
+import MakeLabel
 import McMC
 
 htmlfile :: FilePath
