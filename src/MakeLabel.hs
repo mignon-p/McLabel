@@ -16,13 +16,13 @@ templateName = "label-template.xml"
 makeLabel :: FilePath -> LineItem -> IO ()
 makeLabel fname item = void $ runX $ makeLabel' fname item
 
-makeLabel' :: FilePath -> LineItem -> IOSArrow b c
+makeLabel' :: FilePath -> LineItem -> IOSArrow b XmlTree
 makeLabel' fname item
   = readDocument [] templateName
     >>>
     arr (fillFields item)
     >>>
-    writeDocument [withIndent yes, withOutputEncoding utf8]
+    writeDocument [withIndent yes, withOutputEncoding utf8] fname
 
 fillFields :: LineItem -> XmlTree -> XmlTree
 fillFields item (NTree (XText txt) kids) =
