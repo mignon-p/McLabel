@@ -3,6 +3,12 @@ module TransformItem (transformItems) where
 import qualified Data.ByteString        as B
 import qualified Data.ByteString.Base64 as B64
 import qualified Data.ByteString.Char8  as B8
+import Data.Char
+import Data.Ord
+import Data.List
+import Text.Read
+
+import McMC
 
 loadImage :: FilePath -> LineItem -> IO LineItem
 loadImage prefix item = do
