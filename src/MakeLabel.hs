@@ -10,6 +10,9 @@ import Data.List
 
 import McMC
 
+lineLength :: Int
+lineLength = 25
+
 templateName :: String
 templateName = "label-template.xml"
 
@@ -35,7 +38,7 @@ xformTxt item "INSERT:ITEM_GRAPHIC"        = liImg item
 xformTxt item "INSERT:ITEM_TITLE"          = wrap (liTitle item) ++ "\n"
 xformTxt item "INSERT:ITEM_DESCRIPTION"    = wrap (liDesc item)
 xformTxt item "INSERT:ITEM_URL"            = liUrl item
-xformTxt item "INSERT:ITEM_CATNO"          = liCatNo item
+xformTxt item "INSERT:ITEM_CATNO"          = liCatNo item ++ "\n"
 xformTxt item "INSERT:ITEM_PURCHASE_ORDER" = combinePoLine item
 xformTxt _ txt = txt
 
@@ -52,6 +55,6 @@ wrap' chars s =
       (word, rest) = span (not . isSpace) s'
       first = chars == 0
       space' = if first then "" else " "
-  in if first || chars + length word < 20
+  in if first || chars + length word < lineLength
      then space' ++ word ++ wrap' (chars + length space' + length word) rest
      else "\n" ++ wrap' 0 s'
