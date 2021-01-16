@@ -11,8 +11,8 @@ import Text.Read
 import McMC
 
 loadImage :: FilePath -> LineItem -> IO LineItem
-loadImage prefix item = do
-  let fname = prefix ++ liImg item
+loadImage srcDir item = do
+  let fname = srcDir ++ liImg item
   image <- B.readFile fname
   let b64 = B64.encode image
   return $ item { liImg = B8.unpack b64 }
@@ -46,6 +46,6 @@ sortItems :: [LineItem] -> [LineItem]
 sortItems = sortBy (comparing getLineNo)
 
 transformItems :: FilePath -> [LineItem] -> IO [LineItem]
-transformItems prefix items = do
+transformItems srcDir items = do
   let items' = sortItems $ map fixItem items
-  mapM (loadImage prefix) items'
+  mapM (loadImage srcDir) items'
