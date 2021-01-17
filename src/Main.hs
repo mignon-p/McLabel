@@ -7,6 +7,7 @@ import Text.Read
 
 import MakeLabel
 import McMC
+import McOptions
 import TransformItem
 
 htmlfile :: FilePath

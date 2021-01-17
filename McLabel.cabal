@@ -53,6 +53,9 @@ executable mclabel
   -- Modules included in this executable, other than Main.
   other-modules:       MakeLabel
                      , McMC
+                     , McOptions
+                     , Paths_McLabel
+                     , TransformItem
 
   -- LANGUAGE extensions used by modules in this package.
   -- other-extensions:

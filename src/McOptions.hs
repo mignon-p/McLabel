@@ -1,8 +1,11 @@
+{-# LANGUAGE MultiWayIf #-}
+
 module McOptions
   ( McOptions (..)
   , parseOptionsIO
   ) where
 
+import Control.Monad
 import Data.Version
 import System.Environment
 import System.Exit
@@ -27,7 +30,7 @@ parseOptions defaults (arg:rest) = do
   let (dashes, arg') = span (== '-') arg
       (name, arg'') = span (/= '=') arg'
       nDashes = length dashes
-  if dashes < 1
+  if nDashes < 1
     then parseOptions (addSrcFile defaults arg) rest
     else do
     opt <- findOption nDashes name
@@ -39,6 +42,9 @@ parseOptions defaults (arg:rest) = do
                             ('=':val, _) -> return (val, rest)
                             _ -> Left $ name ++ " requires a value"
         parseOptions (f defaults value) rest'
+
+addSrcFile :: McOptions -> String -> McOptions
+addSrcFile opts name = opts { mcSrcFiles = mcSrcFiles opts ++ [name] }
 
 setDestDir :: McOptions -> String -> McOptions
 setDestDir opts dir = opts { mcDest = dir }
@@ -86,8 +92,8 @@ mkDefault value =
                   | otherwise -> maxIndent
   in replicate indent ' ' ++ msg
 
-version :: String
-version = "McLabel " ++ showVersion version
+versionString :: String
+versionString = "McLabel " ++ showVersion version
 
 parseOptionsIO :: McOptions -> IO McOptions
 parseOptionsIO defaults = do
@@ -105,6 +111,6 @@ parseOptionsIO defaults = do
         mapM_ putErr $ usage defaults
         exitSuccess
       when (mcVersion opts) $ do
-        putErr version
+        putErr versionString
         exitSuccess
       return opts
