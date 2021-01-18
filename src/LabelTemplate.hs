@@ -2,7 +2,6 @@
 
 module LabelTemplate (labelTemplate) where
 
-import qualified Data.ByteString as B
 import qualified Data.ByteString.UTF8 as U
 import Data.FileEmbed
 

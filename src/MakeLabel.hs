@@ -2,11 +2,9 @@ module MakeLabel (makeLabel) where
 
 import Data.Tree.NTree.TypeDefs
 import Text.XML.HXT.Core
-import Text.XML.HXT.XPath.Arrows
 
 import Control.Monad
 import Data.Char
-import Data.List
 
 import LabelTemplate
 import ParseReceipt
