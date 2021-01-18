@@ -115,4 +115,9 @@ parseOptionsIO defaults = do
       when (mcVersion opts) $ do
         putErr versionString
         exitSuccess
+      when (null $ mcSrcFiles opts) $ do
+        putErr "no input filenames given on command line"
+        putErr ""
+        mapM_ putErr $ usage defaults
+        exitFailure
       return opts
