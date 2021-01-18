@@ -10,8 +10,8 @@ import Text.Read
 
 import DirSep
 import MakeLabel
-import McMC
 import McOptions
+import ParseReceipt
 import TransformItem
 
 mcOptions :: McOptions

@@ -1,6 +1,6 @@
 {-# LANGUAGE MultiWayIf #-}
 
-module McMC
+module ParseReceipt
   ( LineItem (..)
   , lineItemsFromFile
   ) where

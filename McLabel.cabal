@@ -56,8 +56,8 @@ executable mclabel
   other-modules:       DirSep
                      , LabelTemplate
                      , MakeLabel
-                     , McMC
                      , McOptions
+                     , ParseReceipt
                      , Paths_McLabel
                      , TransformItem
 

@@ -8,7 +8,7 @@ import Data.Ord
 import Data.List
 import Text.Read
 
-import McMC
+import ParseReceipt
 
 loadImage :: FilePath -> LineItem -> IO LineItem
 loadImage srcDir item = do

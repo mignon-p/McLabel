@@ -9,7 +9,7 @@ import Data.Char
 import Data.List
 
 import LabelTemplate
-import McMC
+import ParseReceipt
 
 makeLabel :: FilePath -> LineItem -> IO ()
 makeLabel fname item = void $ runX $ makeLabel' fname item
