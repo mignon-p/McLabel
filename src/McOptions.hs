@@ -9,6 +9,7 @@ import Control.Monad
 import Data.Version
 import System.Environment
 import System.Exit
+import System.Info
 import System.IO
 
 import Paths_McLabel (version)
@@ -94,8 +95,14 @@ mkIndented msg =
                   | otherwise -> maxIndent
   in replicate indent ' ' ++ msg
 
-versionString :: String
-versionString = "McLabel " ++ showVersion version
+versionStrings :: [String]
+versionStrings =
+  [ "McLabel " ++ showVersion version ++ " " ++
+    "(built with " ++ compilerName ++ " " ++ showVersion compilerVersion ++ ")"
+  , "(c) 2021 Patrick Pelletier, BSD 3-clause license"
+  , "code@funwithsoftware.org"
+  , "https://github.com/ppelleti/McLabel"
+  ]
 
 parseOptionsIO :: McOptions -> IO McOptions
 parseOptionsIO defaults = do
@@ -113,7 +120,7 @@ parseOptionsIO defaults = do
         mapM_ putErr $ usage defaults
         exitSuccess
       when (mcVersion opts) $ do
-        putErr versionString
+        mapM_ putErr versionStrings
         exitSuccess
       when (null $ mcSrcFiles opts) $ do
         putErr "no input filenames given on command line"
