@@ -83,8 +83,8 @@ usage opts =
   , "    -h  --help                Print this message and exit"
   ]
 
-mkDefault :: Show a => a -> String
-mkDefault value = "(Default: " ++ show value ++ ")"
+mkDefault :: String -> String
+mkDefault value = "(Default: '" ++ value ++ "')"
 
 mkIndented :: String -> String
 mkIndented msg =
