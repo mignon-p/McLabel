@@ -8,17 +8,15 @@ import Control.Monad
 import Data.Char
 import Data.List
 
+import LabelTemplate
 import McMC
-
-templateName :: String
-templateName = "label-template.xml"
 
 makeLabel :: FilePath -> LineItem -> IO ()
 makeLabel fname item = void $ runX $ makeLabel' fname item
 
 makeLabel' :: FilePath -> LineItem -> IOSArrow b XmlTree
 makeLabel' fname item
-  = readDocument [] templateName
+  = readString [] labelTemplate
     >>>
     arr (fillFields item)
     >>>
