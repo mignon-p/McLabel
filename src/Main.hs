@@ -2,6 +2,7 @@ module Main where
 
 import Control.Monad
 import Data.List
+import System.Directory
 import System.Environment
 import System.IO.Unsafe
 import Text.Printf
@@ -23,12 +24,10 @@ mcOptions = McOptions
 
 getLabelDir :: IO FilePath
 getLabelDir = do
-  -- This is where it is on my Mac; not sure about other OSes
+  -- This seems to be the location on both Mac and Windows
   let subdir = "Documents/DYMO Label Software/Labels"
-  result <- lookupEnv "HOME"
-  case result of
-    Just home -> return $ ensureSlash home ++ subdir
-    Nothing -> return ""
+  home <- getHomeDirectory
+  return $ ensureSlash home ++ subdir
 
 fmtInt :: Int -> String
 fmtInt n = printf "%03d" n
