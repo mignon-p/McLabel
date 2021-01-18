@@ -1,7 +1,9 @@
 module Main where
 
+import Control.Monad
 import Data.List
 import System.Environment
+import System.IO.Unsafe
 import Text.Printf
 import Text.Read
 
@@ -10,13 +12,23 @@ import McMC
 import McOptions
 import TransformItem
 
-htmlfile :: FilePath
-htmlfile = "/Users/ppelleti/orders/McMaster-Carr/0112ppelleti.html"
+mcOptions :: McOptions
+mcOptions = McOptions
+  { mcDest = unsafePerformIO getLabelDir
+  , mcPrefix = "Mc"
+  , mcVersion = False
+  , mcHelp = False
+  , mcSrcFiles = []
+  }
 
 getLabelDir :: IO FilePath
 getLabelDir = do
-  home <- getEnv "HOME"
-  return $ ensureSlash home ++ "Documents/DYMO Label Software/Labels"
+  -- This is where it is on my Mac; not sure about other OSes
+  let subdir = "Documents/DYMO Label Software/Labels"
+  result <- lookupEnv "HOME"
+  case result of
+    Just home -> return $ ensureSlash home ++ subdir
+    Nothing -> return ""
 
 fmtInt :: Int -> String
 fmtInt n = printf "%03d" n
@@ -27,20 +39,20 @@ zeroPad lineNo =
     Nothing -> lineNo
     Just n -> fmtInt n
 
-writeLabel :: FilePath -> LineItem -> IO ()
-writeLabel destDir item = do
+writeLabel :: FilePath -> String -> LineItem -> IO ()
+writeLabel destDir prefix item = do
   let lineNo = zeroPad (liLineNo item)
-  let destFile = destDir ++ "Mc" ++ liPoNo item ++ "-" ++ lineNo ++ ".label"
+  let destFile = destDir ++ prefix ++ liPoNo item ++ "-" ++ lineNo ++ ".label"
   putStrLn $ "Writing " ++ destFile
   makeLabel destFile item
 
-processFile :: FilePath -> FilePath -> IO ()
-processFile srcFile destDir = do
+processFile :: FilePath -> FilePath -> String -> IO ()
+processFile srcFile destDir prefix = do
   putStrLn $ "Reading " ++ srcFile
   let srcDir = dropWhileEnd (/= '/') srcFile
   items <- lineItemsFromFile srcFile
   items' <- transformItems srcDir items
-  mapM_ (writeLabel destDir) items'
+  mapM_ (writeLabel destDir prefix) items'
 
 ensureSlash :: FilePath -> FilePath
 ensureSlash "" = ""
@@ -50,5 +62,7 @@ ensureSlash dir
 
 main :: IO ()
 main = do
-  labelDir <- getLabelDir
-  processFile htmlfile (ensureSlash labelDir)
+  opts <- parseOptionsIO mcOptions
+  let labelDir = ensureSlash (mcDest opts)
+  forM_ (mcSrcFiles opts) $ \htmlfile -> do
+    processFile htmlfile labelDir (mcPrefix opts)
