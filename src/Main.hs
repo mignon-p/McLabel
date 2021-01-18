@@ -8,6 +8,7 @@ import System.IO.Unsafe
 import Text.Printf
 import Text.Read
 
+import DirSep
 import MakeLabel
 import McMC
 import McOptions
@@ -56,7 +57,7 @@ processFile srcFile destDir prefix = do
 ensureSlash :: FilePath -> FilePath
 ensureSlash "" = ""
 ensureSlash dir
-  | '/' == last dir = dir
+  | last dir `elem` dirSep = dir
   | otherwise = dir ++ "/"
 
 main :: IO ()
