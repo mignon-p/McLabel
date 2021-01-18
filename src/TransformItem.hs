@@ -1,12 +1,12 @@
 module TransformItem (transformItems) where
 
-import qualified Data.ByteString        as B
-import qualified Data.ByteString.Base64 as B64
-import qualified Data.ByteString.Char8  as B8
-import Data.Char
-import Data.Ord
-import Data.List
-import Text.Read
+import qualified Data.ByteString        as B ( readFile )
+import qualified Data.ByteString.Base64 as B64 ( encode )
+import qualified Data.ByteString.Char8  as B8 ( unpack )
+import Data.Char ( isSpace )
+import Data.Ord ( comparing )
+import Data.List ( sortBy, dropWhileEnd )
+import Text.Read ( readMaybe )
 
 import ParseReceipt
 

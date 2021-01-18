@@ -1,11 +1,11 @@
 module Main where
 
-import Control.Monad
-import Data.List
-import System.Directory
-import System.IO.Unsafe
-import Text.Printf
-import Text.Read
+import Control.Monad ( forM_ )
+import Data.List ( dropWhileEnd )
+import System.Directory ( getHomeDirectory )
+import System.IO.Unsafe ( unsafePerformIO )
+import Text.Printf ( printf )
+import Text.Read ( readMaybe )
 
 import DirSep
 import MakeLabel

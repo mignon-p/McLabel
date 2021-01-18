@@ -1,10 +1,22 @@
 module MakeLabel (makeLabel) where
 
-import Data.Tree.NTree.TypeDefs
+import Data.Tree.NTree.TypeDefs ( NTree(NTree) )
 import Text.XML.HXT.Core
+    ( XmlTree,
+      XNode(XText),
+      (>>>),
+      readString,
+      IOSArrow,
+      runX,
+      yes,
+      withOutputEncoding,
+      withIndent,
+      Arrow(arr),
+      utf8,
+      writeDocument )
 
-import Control.Monad
-import Data.Char
+import Control.Monad ( void )
+import Data.Char ( isSpace )
 
 import LabelTemplate
 import ParseReceipt

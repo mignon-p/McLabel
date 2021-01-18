@@ -5,12 +5,23 @@ module ParseReceipt
   , lineItemsFromFile
   ) where
 
-import Data.Tree.NTree.TypeDefs
+import Data.Tree.NTree.TypeDefs ( NTree(NTree) )
 import Text.XML.HXT.Core
-import Text.XML.HXT.XPath.Arrows
+    ( XmlTree,
+      XNode(XAttr, XTag, XText),
+      IOSArrow,
+      localPart,
+      yes,
+      withWarnings,
+      withParseHTML,
+      no,
+      runX,
+      readDocument,
+      (>>>) )
+import Text.XML.HXT.XPath.Arrows ( getXPathTrees )
 
-import Data.List
-import Data.Maybe
+import Data.List ( foldl' )
+import Data.Maybe ( mapMaybe )
 
 data LineItem = LineItem
   { liUrl :: String

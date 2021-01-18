@@ -5,12 +5,12 @@ module McOptions
   , parseOptionsIO
   ) where
 
-import Control.Monad
-import Data.Version
-import System.Environment
-import System.Exit
-import System.Info
-import System.IO
+import Control.Monad ( when )
+import Data.Version ( showVersion )
+import System.Environment ( getArgs )
+import System.Exit ( exitSuccess, exitFailure )
+import System.Info ( compilerVersion, compilerName )
+import System.IO ( stderr, hPutStrLn )
 
 import Paths_McLabel (version)
 
