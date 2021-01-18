@@ -73,20 +73,22 @@ usage :: McOptions -> [String]
 usage opts =
   [ "Usage: mclabel [options] HTMLFILE ..."
   , ""
-  , "-d  --dest-dir=DIR            Set directory for output files"
-  , mkDefault (mcDest opts)
-  , "-p  --prefix=STRING           Set prefix for output file names"
-  , mkDefault (mcPrefix opts)
+  , "    -d  --dest-dir=DIR        Set directory for output files"
+  , mkIndented (mkDefault (mcDest opts))
+  , "    -p  --prefix=STRING       Set prefix for output file names " ++
+    mkDefault (mcPrefix opts)
   , ""
-  , "-v  --version                 Print version and exit"
-  , "-h  --help                    Print this message and exit"
+  , "    -v  --version             Print version and exit"
+  , "    -h  --help                Print this message and exit"
   ]
 
 mkDefault :: Show a => a -> String
-mkDefault value =
-  let msg = "(Default: " ++ show value ++ ")"
-      maxIndent = 32
-      minIndent = 79 - length msg
+mkDefault value = "(Default: " ++ show value ++ ")"
+
+mkIndented :: String -> String
+mkIndented msg =
+  let maxIndent = 32
+      minIndent = 80 - length msg
       indent = if | minIndent < 0 -> 0
                   | minIndent < maxIndent -> minIndent
                   | otherwise -> maxIndent
