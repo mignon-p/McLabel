@@ -81,6 +81,22 @@ need to do this for each label; I don't know of a way to print them
 all at once.)  The label files are formatted to be printed on
 [Large White Shipping Labels (30256)][3].
 
+## Installation
+
+McLabel is written in [Haskell][12].  If you're familiar with
+Haskell, you already know how to build McLabel.  McLabel can
+be built with either [Cabal][9] or [Stack][10].
+
+If you're not familiar with Haskell, here's the quick-start:
+
+* Clone this repo
+* [Install Stack][11]
+* In the top directory of this repo, run `stack --install-ghc install`
+* Wait a really long time (it only takes this long the first time)
+
+This will copy `mclabel` to the directory `~/.local/bin`.  (Or on
+Windows, `%APPDATA%/local/bin`.)  You can either put that directory on
+your `PATH`, or copy the binary to wherever you want to have it.
 
 
 
@@ -92,3 +108,7 @@ all at once.)  The label files are formatted to be printed on
 [6]: https://www.dymo.com/en-US/dymo-user-guides
 [7]: https://www.digikey.com/
 [8]: https://hackaday.io/project/90456-ar-workbench/log/131388-reading-digikey-barcodes
+[9]: https://www.haskell.org/cabal/
+[10]: https://haskellstack.org/
+[11]: https://docs.haskellstack.org/en/stable/install_and_upgrade/
+[12]: https://www.haskell.org/
