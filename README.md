@@ -5,6 +5,8 @@ printing on [Large White Shipping Labels (30256)][3] with a
 [DYMO LabelWriter][5] printer, using [DYMO Label Software][6] for Mac
 or Windows.
 
+![Example label produced by McLabel](images/McLabel-example.png)
+
 ## Motivation
 
 When I buy parts, I like to keep them in the original bag, so that I
@@ -50,6 +52,8 @@ name it after the purchase order number, but that is not required) and
 hit "Save".  If you have multiple purchase orders, you can repeat for
 each one.
 
+![Order History page on McMaster-Carr website](images/McMC-order-history.png)
+
 Now go to the command line and run `mclabel` on the HTML file you just
 saved.  For example,
 
@@ -65,10 +69,10 @@ They will be named something like `Mc0104PPELLETI-007.label`, where
 `0104PPELLETI` is the purchase order number, and `007` is the item's
 line number on the receipt.
 
-By default, McLabel will put its output files in
-`~/Documents/DYMO Label Software/Labels`, which is the default
-directory that the DYMO Label Software goes to when you try to open a
-label.  However, you can change the output directory by specifying the
+By default, McLabel will put its output files in either
+`~/Documents/DYMO Label Software/Labels` or
+`~/Documents/DYMO Label/Labels`, if one of those directories exists.
+However, you can change the output directory by specifying the
 `-d` or `--dest-dir` option on the command line.
 
 You can change the default `Mc` prefix for output file names with the
