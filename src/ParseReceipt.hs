@@ -1,9 +1,6 @@
 {-# LANGUAGE MultiWayIf #-}
 
-module ParseReceipt
-  ( LineItem (..)
-  , lineItemsFromFile
-  ) where
+module ParseReceipt (lineItemsFromFile) where
 
 import Data.Tree.NTree.TypeDefs ( NTree(NTree) )
 import Text.XML.HXT.Core
@@ -23,16 +20,7 @@ import Text.XML.HXT.XPath.Arrows ( getXPathTrees )
 import Data.List ( foldl' )
 import Data.Maybe ( mapMaybe )
 
-data LineItem = LineItem
-  { liUrl :: String
-  , liImg :: String
-  , liTitle :: String
-  , liDesc :: String
-  , liCatNo :: String
-  , liLineNo :: String
-  , liPoNo :: String
-  , liGotBreak :: !Bool
-  } deriving (Eq, Ord, Show)
+import Types ( LineItem (..) )
 
 data State = TopLevel | DtlRowNbr | TitleDtlLink | DtlRowCopy | DtlRowSpecs
            deriving (Eq, Ord, Show)

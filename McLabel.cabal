@@ -60,6 +60,7 @@ executable mclabel
                      , ParseReceipt
                      , Paths_McLabel
                      , TransformItem
+                     , Types
 
   -- LANGUAGE extensions used by modules in this package.
   -- other-extensions:

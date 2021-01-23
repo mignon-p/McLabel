@@ -1,6 +1,6 @@
 module Main where
 
-import Control.Monad ( forM_ )
+import Control.Monad ( forM_, when )
 import Data.List ( dropWhileEnd )
 import System.Directory ( getHomeDirectory )
 import System.IO.Unsafe ( unsafePerformIO )
@@ -12,6 +12,7 @@ import MakeLabel
 import McOptions
 import ParseReceipt
 import TransformItem
+import Types
 
 mcOptions :: McOptions
 mcOptions = McOptions
@@ -42,8 +43,20 @@ writeLabel :: FilePath -> String -> LineItem -> IO ()
 writeLabel destDir prefix item = do
   let lineNo = zeroPad (liLineNo item)
   let destFile = destDir ++ prefix ++ liPoNo item ++ "-" ++ lineNo ++ ".label"
-  putStrLn $ "Writing " ++ destFile
+  putStrLn $ "  Writing " ++ destFile
   makeLabel destFile item
+
+noItemMessage :: [String]
+noItemMessage =
+  [ "  <div class=\"dtl-row-info\"> not found in specified HTML file."
+  , "  Possible reasons:"
+  , "    1.  Input file is not the correct HTML file."
+  , "        (Go to https://www.mcmaster.com/order-history and click on a"
+  , "        specific purchase order on the right side of the screen, and then"
+  , "        save that page as \"Web Page, complete\".)"
+  , "    2.  McMaster-Carr has changed their HTML format since this program"
+  , "        was written."
+  ]
 
 processFile :: FilePath -> FilePath -> String -> IO ()
 processFile srcFile destDir prefix = do
@@ -51,6 +64,7 @@ processFile srcFile destDir prefix = do
   let srcDir = dropWhileEnd (/= '/') srcFile
   items <- lineItemsFromFile srcFile
   items' <- transformItems srcDir items
+  when (null items') $ mapM_ putStrLn noItemMessage
   mapM_ (writeLabel destDir prefix) items'
 
 ensureSlash :: FilePath -> FilePath

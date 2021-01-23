@@ -19,7 +19,7 @@ import Control.Monad ( void )
 import Data.Char ( isSpace )
 
 import LabelTemplate
-import ParseReceipt
+import Types ( LineItem (..) )
 
 makeLabel :: FilePath -> LineItem -> IO ()
 makeLabel fname item = void $ runX $ makeLabel' fname item

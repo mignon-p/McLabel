@@ -1,9 +1,6 @@
 {-# LANGUAGE MultiWayIf #-}
 
-module McOptions
-  ( McOptions (..)
-  , parseOptionsIO
-  ) where
+module McOptions (parseOptionsIO) where
 
 import Control.Monad ( when )
 import Data.Version ( showVersion )
@@ -12,15 +9,8 @@ import System.Exit ( exitSuccess, exitFailure )
 import System.Info ( compilerVersion, compilerName )
 import System.IO ( stderr, hPutStrLn )
 
-import Paths_McLabel (version)
-
-data McOptions = McOptions
-  { mcDest     :: String
-  , mcPrefix   :: String
-  , mcVersion  :: !Bool
-  , mcHelp     :: !Bool
-  , mcSrcFiles :: [String]
-  } deriving (Eq, Show)
+import Paths_McLabel ( version )
+import Types ( McOptions (..) )
 
 data Option = OptionArg (McOptions -> String -> McOptions)
             | OptionFlag (McOptions -> McOptions)

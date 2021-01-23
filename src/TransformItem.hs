@@ -8,7 +8,7 @@ import Data.Ord ( comparing )
 import Data.List ( sortBy, dropWhileEnd )
 import Text.Read ( readMaybe )
 
-import ParseReceipt
+import Types ( LineItem (..) )
 
 loadImage :: FilePath -> LineItem -> IO LineItem
 loadImage srcDir item = do
