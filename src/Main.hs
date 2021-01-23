@@ -1,8 +1,10 @@
 module Main where
 
+import Control.Exception ( try )
 import Control.Monad ( forM_, when )
 import Data.List ( dropWhileEnd )
-import System.Directory ( getHomeDirectory )
+import System.Directory ( doesDirectoryExist, getHomeDirectory )
+import System.IO.Error ( IOError )
 import System.IO.Unsafe ( unsafePerformIO )
 import Text.Printf ( printf )
 import Text.Read ( readMaybe )
@@ -23,12 +25,44 @@ mcOptions = McOptions
   , mcSrcFiles = []
   }
 
-getLabelDir :: IO FilePath
+-- "DYMO Label Software" is used on my Mac, while "DYMO Label" is
+-- used on my Windows machine.  Not sure if that is a platform
+-- difference, or different versions of the DYMO Label software.
+-- Anyway, check them both.
+labelSubdirs :: [[String]]
+labelSubdirs =
+  [ [ "Documents", "DYMO Label Software", "Labels" ]
+  , [ "Documents", "DYMO Label", "Labels" ]
+  ]
+
+mkLabelPath :: FilePath -> [String] -> FilePath
+mkLabelPath home dirs =
+  -- home should end in '/' or '\' unless it is empty
+  let sep = if null home
+            then '/'
+            else last home
+  in home ++ intercalate [sep] dirs
+
+checkLabelPath :: FilePath -> IO (Maybe FilePath)
+checkLabelPath path = do
+  exists <- doesDirectoryExist path
+  return $ if exists then Just path else Nothing
+
+getLabelDir :: IO LabelDir
 getLabelDir = do
-  -- This seems to be the location on both Mac and Windows
-  let subdir = "Documents/DYMO Label Software/Labels"
+  eth <- getLabelDir'
+  return $ case eth of
+             Left ioe -> Left (LDFIOError ioe)
+             Right (paths, foundPaths) -> case catMaybes foundPaths of
+                                            labelDir:_ -> Right labelDir
+                                            _ -> Left (LDFNotFound paths)
+
+getLabelDir' :: IO (Either IOError ([FilePath], [Maybe FilePath]))
+getLabelDir' = try $ do
   home <- getHomeDirectory
-  return $ ensureSlash home ++ subdir
+  let paths = map (mkLabelPath (ensureSlash home)) labelSubdirs
+  foundPaths <- mapM checkLabelPath paths
+  return (paths, foundPaths)
 
 fmtInt :: Int -> String
 fmtInt n = printf "%03d" n
@@ -60,6 +94,7 @@ noItemMessage =
   , "        is available.)"
   ]
 
+-- TODO: use correct separators
 processFile :: FilePath -> FilePath -> String -> IO ()
 processFile srcFile destDir prefix = do
   putStrLn $ "Reading " ++ srcFile
@@ -69,6 +104,7 @@ processFile srcFile destDir prefix = do
   when (null items') $ mapM_ putStrLn noItemMessage
   mapM_ (writeLabel destDir prefix) items'
 
+-- TODO: use correct separator
 ensureSlash :: FilePath -> FilePath
 ensureSlash "" = ""
 ensureSlash dir

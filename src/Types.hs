@@ -1,7 +1,11 @@
 module Types
   ( LineItem (..)
   , McOptions (..)
+  , LabelDirFailure (..)
+  , LabelDir
   ) where
+
+import System.IO.Error (IOError)
 
 data LineItem = LineItem
   { liUrl :: String
@@ -15,9 +19,15 @@ data LineItem = LineItem
   } deriving (Eq, Ord, Show)
 
 data McOptions = McOptions
-  { mcDest     :: String
+  { mcDest     :: LabelDir
   , mcPrefix   :: String
   , mcVersion  :: !Bool
   , mcHelp     :: !Bool
   , mcSrcFiles :: [String]
   } deriving (Eq, Show)
+
+data LabelDirFailure =
+  LDFIOError IOError
+  LDFNotFound [String]
+
+type LabelDir = Either LabelDirFailure FilePath
