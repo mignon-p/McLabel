@@ -56,6 +56,8 @@ noItemMessage =
   , "        save that page as \"Web Page, complete\".)"
   , "    2.  McMaster-Carr has changed their HTML format since this program"
   , "        was written."
+  , "        (Go to " ++ homepage ++ " and see if a new version"
+  , "        is available.)"
   ]
 
 processFile :: FilePath -> FilePath -> String -> IO ()

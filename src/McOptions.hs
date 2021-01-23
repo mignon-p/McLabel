@@ -1,6 +1,9 @@
 {-# LANGUAGE MultiWayIf #-}
 
-module McOptions (parseOptionsIO) where
+module McOptions
+  ( homepage
+  , parseOptionsIO
+  ) where
 
 import Control.Monad ( when )
 import Data.Version ( showVersion )
@@ -11,6 +14,9 @@ import System.IO ( stderr, hPutStrLn )
 
 import Paths_McLabel ( version )
 import Types ( McOptions (..) )
+
+homepage :: String
+homepage = "https://github.com/ppelleti/McLabel"
 
 data Option = OptionArg (McOptions -> String -> McOptions)
             | OptionFlag (McOptions -> McOptions)
@@ -91,7 +97,7 @@ versionStrings =
     "(built with " ++ compilerName ++ " " ++ showVersion compilerVersion ++ ")"
   , "(c) 2021 Patrick Pelletier, BSD 3-clause license"
   , "code@funwithsoftware.org"
-  , "https://github.com/ppelleti/McLabel"
+  , homepage
   ]
 
 parseOptionsIO :: McOptions -> IO McOptions
