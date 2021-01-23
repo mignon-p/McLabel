@@ -1,10 +1,11 @@
 module Main where
 
-import Control.Exception ( try )
+import Control.Exception ( ioError, try )
 import Control.Monad ( forM_, when )
 import Data.List ( dropWhileEnd, find, intercalate )
 import Data.Maybe ( catMaybes )
 import System.Directory ( doesDirectoryExist, getHomeDirectory )
+import System.Exit ( exitFailure )
 import System.IO.Error ( IOError )
 import System.IO.Unsafe ( unsafePerformIO )
 import Text.Printf ( printf )
@@ -122,6 +123,13 @@ ensureSlash dir
 main :: IO ()
 main = do
   opts <- parseOptionsIO mcOptions
-  let labelDir = ensureSlash (mcDest opts)
-  forM_ (mcSrcFiles opts) $ \htmlfile -> do
-    processFile htmlfile labelDir (mcPrefix opts)
+  case mcDest opts of
+    Right labelDir0 -> do
+      let labelDir = ensureSlash labelDir0
+      forM_ (mcSrcFiles opts) $ \htmlfile -> do
+        processFile htmlfile labelDir (mcPrefix opts)
+    Left (LDFIOError ioe) -> ioError ioe
+    Left (LDFNotFound paths) -> do
+      putStrLn "Could not find default label directory.  Tried these paths:"
+      mapM_ putStrLn $ map ("  " ++) paths
+      exitFailure
