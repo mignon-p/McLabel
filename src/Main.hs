@@ -2,7 +2,8 @@ module Main where
 
 import Control.Exception ( try )
 import Control.Monad ( forM_, when )
-import Data.List ( dropWhileEnd )
+import Data.List ( dropWhileEnd, find, intercalate )
+import Data.Maybe ( catMaybes )
 import System.Directory ( doesDirectoryExist, getHomeDirectory )
 import System.IO.Error ( IOError )
 import System.IO.Unsafe ( unsafePerformIO )
@@ -94,22 +95,29 @@ noItemMessage =
   , "        is available.)"
   ]
 
--- TODO: use correct separators
+isSep :: Char -> Bool
+isSep = (`elem` dirSep)
+
+getSep :: FilePath -> Char
+getSep path =
+  case find isSep path of
+    Nothing -> head dirSep
+    Just c -> c
+
 processFile :: FilePath -> FilePath -> String -> IO ()
 processFile srcFile destDir prefix = do
   putStrLn $ "Reading " ++ srcFile
-  let srcDir = dropWhileEnd (/= '/') srcFile
+  let srcDir = dropWhileEnd (not . isSep) srcFile
   items <- lineItemsFromFile srcFile
   items' <- transformItems srcDir items
   when (null items') $ mapM_ putStrLn noItemMessage
   mapM_ (writeLabel destDir prefix) items'
 
--- TODO: use correct separator
 ensureSlash :: FilePath -> FilePath
 ensureSlash "" = ""
 ensureSlash dir
-  | last dir `elem` dirSep = dir
-  | otherwise = dir ++ "/"
+  | isSep (last dir) = dir
+  | otherwise = dir ++ [getSep dir]
 
 main :: IO ()
 main = do

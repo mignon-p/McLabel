@@ -26,8 +26,8 @@ data McOptions = McOptions
   , mcSrcFiles :: [String]
   } deriving (Eq, Show)
 
-data LabelDirFailure =
-  LDFIOError IOError
-  LDFNotFound [String]
+data LabelDirFailure = LDFIOError IOError
+                     | LDFNotFound [String]
+                     deriving (Eq, Show)
 
 type LabelDir = Either LabelDirFailure FilePath

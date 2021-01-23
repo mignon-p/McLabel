@@ -13,7 +13,7 @@ import System.Info ( compilerVersion, compilerName )
 import System.IO ( stderr, hPutStrLn )
 
 import Paths_McLabel ( version )
-import Types ( McOptions (..) )
+import Types ( McOptions (..), LabelDir )
 
 homepage :: String
 homepage = "https://github.com/ppelleti/McLabel"
@@ -44,7 +44,7 @@ addSrcFile :: McOptions -> String -> McOptions
 addSrcFile opts name = opts { mcSrcFiles = mcSrcFiles opts ++ [name] }
 
 setDestDir :: McOptions -> String -> McOptions
-setDestDir opts dir = opts { mcDest = dir }
+setDestDir opts dir = opts { mcDest = Right dir }
 
 setPrefix :: McOptions -> String -> McOptions
 setPrefix opts pfx = opts { mcPrefix = pfx }
@@ -71,13 +71,17 @@ usage opts =
   [ "Usage: mclabel [options] HTMLFILE ..."
   , ""
   , "    -d  --dest-dir=DIR        Set directory for output files"
-  , mkIndented (mkDefault (mcDest opts))
-  , "    -p  --prefix=STRING       Set prefix for output file names " ++
+  ] ++ destDefault (mcDest opts) ++
+  [ "    -p  --prefix=STRING       Set prefix for output file names " ++
     mkDefault (mcPrefix opts)
   , ""
   , "    -v  --version             Print version and exit"
   , "    -h  --help                Print this message and exit"
   ]
+
+destDefault :: LabelDir -> [String]
+destDefault (Left _) = []
+destDefault (Right dir) = [mkIndented (mkDefault dir)]
 
 mkDefault :: String -> String
 mkDefault value = "(Default: '" ++ value ++ "')"
