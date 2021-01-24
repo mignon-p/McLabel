@@ -29,6 +29,8 @@ for any items I intend to keep in the bag.)  I have a
 [LabelWriter 450][5] printer, so the output is targeted to the DYMO
 Label Software that comes with that printer.
 
+![McMaster-Carr bag with and without label](images/with-without-McLabel.jpg)
+
 ## Usage
 
 ```
