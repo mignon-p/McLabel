@@ -1,5 +1,5 @@
-# Revision history for McMaster-Carr
+# Revision history for McLabel
 
-## 0.1.0.0  -- YYYY-mm-dd
+## 0.1  -- 2021-01-23
 
 * First version. Released on an unsuspecting world.

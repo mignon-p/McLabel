@@ -13,10 +13,16 @@ name:                McLabel
 version:             0.1
 
 -- A short (one-line) description of the package.
--- synopsis:
+synopsis:            Create labels for McMaster-Carr bags.
 
 -- A longer description of the package.
--- description:
+description:
+        McLabel is a command-line program which will process your
+        McMaster-Carr receipt/invoice in HTML format, and generate a
+        label for each item in DYMO Label v.8 XML format, suitable for
+        printing on Large White Shipping Labels (30256) with a
+        DYMO LabelWriter printer, using DYMO Label Software for Mac
+        or Windows.
 
 -- The license under which the package is released.
 license:             BSD3
@@ -32,7 +38,9 @@ author:              Patrick Pelletier
 maintainer:          code@funwithsoftware.org
 
 -- A copyright notice.
--- copyright:
+copyright:           (c) 2021 Patrick Pelletier
+
+homepage:            https://github.com/ppelleti/McLabel
 
 -- category:
 
@@ -42,10 +50,21 @@ build-type:          Simple
 -- README.
 extra-source-files:  ChangeLog.md
                    , label-template.xml
+                   , README.md
                    , stack.yaml
+                   , images/McLabel-example.png
+                   , images/McMC-order-history.png
+                   , images/with-without-McLabel.jpg
 
 -- Constraint on the version of Cabal needed to build this package.
 cabal-version:       >=1.10
+
+tested-with:         GHC == 7.8.3
+                   , GHC == 8.6.4
+
+source-repository head
+  Type:     git
+  Location: https://github.com/ppelleti/McLabel.git
 
 
 executable mclabel

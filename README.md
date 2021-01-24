@@ -89,13 +89,24 @@ all at once.)  The label files are formatted to be printed on
 
 ## Installation
 
+### From binaries
+
+Binaries for Mac OS X and Windows are available under the
+[releases][13] tab on GitHub.  (Linux binaries are not provided,
+because the DYMO Label Software does not support Linux, so there would
+be no way to print the labels you create.)
+
+Just copy the appropriate binary into a directory on your `PATH`.
+
+### From source
+
 McLabel is written in [Haskell][12].  If you're familiar with
 Haskell, you already know how to build McLabel.  McLabel can
 be built with either [Cabal][9] or [Stack][10].
 
 If you're not familiar with Haskell, here's the quick-start:
 
-* Clone this repo
+* Clone this repo (or download a source distribution from [releases][13])
 * [Install Stack][11]
 * In the top directory of this repo, run `stack --install-ghc install`
 * Wait a really long time (it only takes this long the first time)
@@ -118,3 +129,4 @@ your `PATH`, or copy the binary to wherever you want to have it.
 [10]: https://haskellstack.org/
 [11]: https://docs.haskellstack.org/en/stable/install_and_upgrade/
 [12]: https://www.haskell.org/
+[13]: https://github.com/ppelleti/McLabel/releases
